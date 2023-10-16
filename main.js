@@ -2,7 +2,8 @@
 //import './style.css';
 
 // window.location.replace('./src/login-registration/pages/main.html');
-window.location.replace('./src/login-registration/pages/main.html');
+// window.location.replace('./src/login-registration/pages/main.html');
+window.location.replace( './src/login-registration/pages/login.html' );
 
 /*
 1. index.html
