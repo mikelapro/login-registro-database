@@ -1,50 +1,21 @@
+// import { checkCredenciales } from '../usecases/check-credenciales.js';
 
 let credencialesValidas = [
     'mike|7777',
     'esteban|orlando',
     'samanta|miami'];
 
-document.querySelector( '#button-ingresar' ).addEventListener( 'click', () => {
-    let divMensajeError = document.querySelector( '#mensaje-error2' );
-    let inputUsuario = document.querySelector( '#usuario' );
-    let inputContrasena = document.querySelector( '#contrasena' );
+// Obtiene los elementos del html que se requieren usar en JS.
+let divMensajeError = document.querySelector( '#mensaje-error2' );
+let inputUsuario = document.querySelector( '#usuario' );
+let inputContrasena = document.querySelector( '#contrasena' );
 
-    // Lmpia el mensaje de error anterior.
-    divMensajeError.innerHTML = '';
-    divMensajeError.style.display = 'none';
-
-    // Valida que el usuario haya ingresado datos.
-    if ( inputContrasena.value == undefined
-        || inputUsuario.value == undefined
-        || inputContrasena.value == ''
-        || inputUsuario.value == ''
-        || inputContrasena.value.trim() == ''
-        || inputUsuario.value.trim() == '' ) {
-        divMensajeError.innerHTML = 'Debe ingresar las credenciales.';
-        divMensajeError.style.display = 'block';
-
+const login = () => {
+    if ( validarDatosRequeridos() == false ) {
         return;
     }
 
-    let flagCredencialesOk;
-
-    // Credenciales ingresadas por el usuario.
-    const credencialesIngresadas = inputUsuario.value.toLowerCase() + '|' + inputContrasena.value;
-    
-    // Asigna al Flag si las credenciales son correctas o no.
-    // TODO: Cambiar credencialesValidas por las obtenidas de la base de datos.
-    // TODO: Obteber al usuario correspondiente al nombre de usuario ingresado de la base de datos.
-    // TODO: Si no se encuentra el usuario en la base de datos mostrar un mensaje al usuario.
-    if ( credencialesIngresadas == credencialesValidas[0]
-        || credencialesIngresadas == credencialesValidas[1]
-        || credencialesIngresadas == credencialesValidas[2] ) {
-
-        flagCredencialesOk = true;
-    } else {
-        flagCredencialesOk = false;
-    }
-
-    if ( flagCredencialesOk == false ) {
+    if ( checkCredenciales() == false ) {
         // Credenciales incorrectas.
         divMensajeError.innerHTML = 'El nombre de usuario o la contraseña son incorrectos.';
         divMensajeError.style.display = 'block';
@@ -58,4 +29,55 @@ document.querySelector( '#button-ingresar' ).addEventListener( 'click', () => {
         window.location.href = 'main.html?nombre=' + usuarioValue;
         //window.location.href = `main.html?nombre=${usuarioValue}`;
     }
-} );
+};
+
+/**
+ * Valida que el usuario haya ingresado los datos requeridos.
+ * @returns true, si todos los datos requeridos fueron ingresados. De lo contrario, false.
+ */
+const validarDatosRequeridos = () => {
+    // Limpia el mensaje de error anterior.
+    divMensajeError.innerHTML = '';
+    divMensajeError.style.display = 'none';
+
+    if ( inputContrasena.value == undefined
+        || inputUsuario.value == undefined
+        || inputContrasena.value == ''
+        || inputUsuario.value == ''
+        || inputContrasena.value.trim() == ''
+        || inputUsuario.value.trim() == '' ) {
+        divMensajeError.innerHTML = 'Debe ingresar las credenciales.';
+
+        divMensajeError.style.display = 'block';
+
+        return false;
+    }
+
+    return true;
+};
+
+/**
+ * Verifica que las credenciales sean correctas.
+ * @param {String} usuario 
+ * @param {String} contrasena 
+ * @returns true, si las credenciales son correctas. De lo contrario false.
+ */
+const checkCredenciales = () => {
+    // Credenciales ingresadas por el usuario.
+    const credencialesIngresadas = inputUsuario.value.toLowerCase() + '|' + inputContrasena.value;
+
+    // TODO: Cambiar credencialesValidas por las obtenidas de la base de datos.
+    // TODO: Obteber al usuario correspondiente al nombre de usuario ingresado de la base de datos.
+    // TODO: Si no se encuentra el usuario en la base de datos mostrar un mensaje al usuario.
+    if ( credencialesIngresadas == credencialesValidas[0]
+        || credencialesIngresadas == credencialesValidas[1]
+        || credencialesIngresadas == credencialesValidas[2] ) {
+
+        return true;
+    }
+
+    return false;
+};
+
+// Escucha el evento click del elemento button-ingresar.
+document.querySelector( '#button-ingresar' ).addEventListener( 'click', login );

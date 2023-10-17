@@ -1,15 +1,16 @@
 import { Usuario } from '../models/usuario.js';
+// import { registrarUsuario } from '../usecases/registrar-usuario.js';
 
-// Agrega un EventListener al elemento confirmar-contrasena para escuchar
-// el evento blur y llamar a la funcion validarConfirmacion.
-document.getElementById( 'input-confirmar-contrasena' ).addEventListener( 'blur', validarConfirmacion );
 
-// Valida que la confirmacion de la contraseña sea igual a la contraseña.
-function validarConfirmacion() {
+/**
+ * Valida que la confirmacion de la contraseña sea igual a la contraseña.
+ * @returns true, si la contraseña y la confirmación son iguales. De lo contrario, false.
+ */
+const validarConfirmacion = () => {
     let ret;
 
-    let inputConfirmarContrasena = document.getElementById( 'input-confirmar-contrasena' );
-    let inputContrasena = document.getElementById( 'input-contrasena' );
+    let inputConfirmarContrasena = document.querySelector( '#input-confirmar-contrasena' );
+    let inputContrasena = document.querySelector( '#input-contrasena' );
 
     let inputConfirmarContrasenaValue = inputConfirmarContrasena.value;
     let inputContrasenaValue = inputContrasena.value;
@@ -25,19 +26,25 @@ function validarConfirmacion() {
     }
 
     return ret;
-}
+};
 
-// Registra un usuario con los datos cargados en el formulario.
-function registrarUsuario() {
+/**
+ * Registra un usuario con los datos cargados en el formulario.
+ * @returns El usuario registrado.
+ */
+const registrarUsuario = () => {
     // TODO: Guardar los datos en base de datos.
     let usuario = getUsuario();
     console.log( 'Usuario:', usuario );
 
     return usuario;
-}
+};
 
-// Crea un nuevo usuario con los datos cargados en el formulario.
-function getUsuario() {
+/**
+ * Obtiene un usuario generado con los datos cargados en el formulario.
+ * @returns Usuario con los datos cargados en el formulario.
+ */
+const getUsuario = () => {
     let inputUsuarioValue = document.querySelector( '#input-usuario' ).value;
     let inputNombreValue = document.querySelector( '#input-nombre' ).value;
     let inputApellidoValue = document.querySelector( '#input-apellido' ).value;
@@ -54,18 +61,18 @@ function getUsuario() {
         optionGeneroText );
 
     return usuario;
-}
+};
 
 ( function () {
     'use strict';
 
     // Obtiene todos los formularios a los que queremos aplicar estilos de validación 
     // de Bootstrap personalizados.
-    var forms = document.querySelectorAll( '.needs-validation' );
+    const forms = document.querySelectorAll( '.needs-validation' );
 
     // Validoción de datos del formilario (Bootstrap).
     Array.prototype.slice.call( forms )
-        .forEach( function ( form ) {  
+        .forEach( function ( form ) {
             form.addEventListener( 'submit', function ( event ) {
                 if ( !form.checkValidity() || !validarConfirmacion() ) {
                     event.preventDefault();
@@ -85,3 +92,7 @@ function getUsuario() {
             }, false );
         } );
 } )();
+
+// Agrega un EventListener al elemento confirmar-contrasena para escuchar
+// el evento blur y llamar a la funcion validarConfirmacion.
+document.querySelector( '#input-confirmar-contrasena' ).addEventListener( 'blur', validarConfirmacion );
