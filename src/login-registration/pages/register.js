@@ -1,4 +1,5 @@
 import { Usuario } from '../models/usuario.js';
+import * as usecases from '../usecases/index.js';
 // import { registrarUsuario } from '../usecases/registrar-usuario.js';
 
 
@@ -35,7 +36,8 @@ const validarConfirmacion = () => {
 const registrarUsuario = () => {
     // TODO: Guardar los datos en base de datos.
     let usuario = getUsuario();
-    console.log( 'Usuario:', usuario );
+    
+    usecases.registrarUsuario( usuario );
 
     return usuario;
 };

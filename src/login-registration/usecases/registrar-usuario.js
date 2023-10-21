@@ -1,4 +1,4 @@
 export const registrarUsuario = ( usuario ) => {
-    usuario;
-    //TODO: Implementar.
+    //TODO: Usar el repositorio de usuario para guardar los datos en base de datos.
+    console.log( usuario );
 };
