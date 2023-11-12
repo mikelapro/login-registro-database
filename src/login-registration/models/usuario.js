@@ -1,13 +1,13 @@
 // Crea y almacena datos del usuario registrado.
 export class Usuario {
-    usuario;
+    nombreUsuario;
     nombre;
     apellido;
     contrasena;
     genero;
 
-    constructor( usuario, nombre, apellido, contrasena, genero ) {
-        this.usuario = usuario;
+    constructor( nombreUsuario, nombre, apellido, contrasena, genero ) {
+        this.nombreUsuario = nombreUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.contrasena = contrasena;

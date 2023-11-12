@@ -33,13 +33,12 @@ const validarConfirmacion = () => {
  * Registra un usuario con los datos cargados en el formulario.
  * @returns El usuario registrado.
  */
-const registrarUsuario = () => {
-    // TODO: Guardar los datos en base de datos.
+const registrarUsuario = async () => {
     let usuario = getUsuario();
     
-    usecases.registrarUsuario( usuario );
+    const registered = await usecases.registrarUsuario( usuario );
 
-    return usuario;
+    return registered;
 };
 
 /**
@@ -75,14 +74,16 @@ const getUsuario = () => {
     // Validoción de datos del formilario (Bootstrap).
     Array.prototype.slice.call( forms )
         .forEach( function ( form ) {
-            form.addEventListener( 'submit', function ( event ) {
+            form.addEventListener( 'submit', async function ( event ) {
                 if ( !form.checkValidity() || !validarConfirmacion() ) {
                     event.preventDefault();
                     event.stopPropagation();
                 } else {
+                    event.preventDefault();
+                    event.stopPropagation();
 
                     // Registra un usuario con los datos cargados en el formulario.
-                    let usuario = registrarUsuario();
+                    let usuario = await registrarUsuario();
 
                     event.preventDefault();
                     event.stopPropagation();
