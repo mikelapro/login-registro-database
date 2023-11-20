@@ -94,6 +94,7 @@ const getUsuario = () => {
 
             }, false );
         } );
+        
 } )();
 
 // Agrega un EventListener al elemento confirmar-contrasena para escuchar
