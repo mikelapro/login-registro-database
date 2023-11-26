@@ -82,6 +82,10 @@ const getUsuario = () => {
                     event.preventDefault();
                     event.stopPropagation();
 
+                    // TODO: Agregar un cath y controlar los errores ApiHitFail y UserNameAlreadyExist
+                    // y si se capturaron estos errores mostrar un mensaje acorde al usuario
+                    // en el div de mensajes.
+                    
                     // Registra un usuario con los datos cargados en el formulario.
                     let usuario = await registrarUsuario();
 

@@ -1,4 +1,5 @@
 import{ config } from '../models/config.js';
+import * as errors from '../errors/index.js';
 
 /**
  * Regristra el usuario especificado mediante el endpoint POST /usuarios.
@@ -8,11 +9,12 @@ import{ config } from '../models/config.js';
 export const registrarUsuario = async ( usuario ) => {
 
     let response = null;
-
+    let objResponse = null;
     const endpoint = `${config.apiBaseUri}/usuarios`;
     const body = JSON.stringify( usuario );
 
     try {
+        // Hit al API.
         response = await fetch( endpoint, {
             method: 'POST',
             body: body,
@@ -21,22 +23,24 @@ export const registrarUsuario = async ( usuario ) => {
             }
         } );
 
-        if ( !response.ok ){
-            // TODO: ...
-            // Analizar si se puede relanzar el error o crear uno nuevo.
-        }
-        
+        // Convierte el json del response en objeto.
+        objResponse = await response.json();
+
     } catch ( error ) {
         // *NOTE: La función fetch() no toma como error los 400/500, los toma como una 
         // * respuesta válida. Si es error o no, hay que tratarlo dentro del Try con 
         // * response.ok=true/false. Solo da error por falla en la conexión.
-        console.log( error );
+        throw new errors.ApiHitFail( endpoint );
     }
 
-    
+    // Si el response NO es ok (ej. error 400, 500, etc.)
+    if ( !response.ok ){
+        if( objResponse.errorCode == 'UserNameAlreadyExist' ){
+            throw new errors.UserNameAlreadyExist;
+        } else {
+            throw new Error( objResponse.message );
+        }
+    }
 
-    // TODO: Devolver el objeto y no el json.
-    const jsonResponse = await response.json();
-
-    return jsonResponse;
+    return objResponse;
 };
