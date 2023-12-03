@@ -2,6 +2,7 @@ import { Usuario } from '../models/usuario.js';
 import * as usecases from '../usecases/index.js';
 // import { registrarUsuario } from '../usecases/registrar-usuario.js';
 
+const divMensajeError = document.querySelector( '#mensaje-error' );
 
 /**
  * Valida que la confirmacion de la contraseña sea igual a la contraseña.
@@ -32,12 +33,12 @@ const validarConfirmacion = () => {
 /**
  * Registra un usuario con los datos cargados en el formulario.
  * @returns El usuario registrado.
- */
+*/
 const registrarUsuario = async () => {
     let usuario = getUsuario();
     
     const registered = await usecases.registrarUsuario( usuario );
-
+    
     return registered;
 };
 
@@ -51,17 +52,25 @@ const getUsuario = () => {
     let inputApellidoValue = document.querySelector( '#input-apellido' ).value;
     let inputcontrasenaValue = document.querySelector( '#input-contrasena' ).value;
     let optionGenero = document.querySelector( '#option-genero' );
-
+    
     let optionGeneroText = optionGenero.options[optionGenero.selectedIndex].text;
-
+    
     let usuario = new Usuario(
         inputUsuarioValue,
         inputNombreValue,
         inputApellidoValue,
         inputcontrasenaValue,
         optionGeneroText );
-
+        
     return usuario;
+};
+
+/**
+ * Limpia el mensaje de error anterior.
+ */
+const limpiarFormulario = () => {
+    divMensajeError.innerHTML = '';
+    divMensajeError.style.display = 'none'; 
 };
 
 ( function () {
@@ -79,19 +88,30 @@ const getUsuario = () => {
                     event.preventDefault();
                     event.stopPropagation();
                 } else {
+                    // Limpia el mensaje de error anterior.
+                    limpiarFormulario();
+
                     event.preventDefault();
                     event.stopPropagation();
-
-                    // TODO: Agregar un cath y controlar los errores ApiHitFail y UserNameAlreadyExist
-                    // y si se capturaron estos errores mostrar un mensaje acorde al usuario
-                    // en el div de mensajes.
                     
-                    // Registra un usuario con los datos cargados en el formulario.
-                    let usuario = await registrarUsuario();
+                    let usuario;
+                    
+                    try {
+                        // TODO: Mostrar a Mike problematica de funciones que solo pueden 
+                        // ver usuarios con credenciales y como resolverlo con token!
+                        
+                        // Registra un usuario con los datos cargados en el formulario.
+                        usuario = await registrarUsuario();
 
-                    event.preventDefault();
-                    event.stopPropagation();
-                    window.location.href = 'main.html?nombre=' + usuario.nombre;
+                        event.preventDefault();
+                        event.stopPropagation();
+                        window.location.href = 'main.html?nombre=' + usuario.nombre;
+                        
+                    } catch ( error ) {
+                        divMensajeError.innerHTML = error.message;
+                        divMensajeError.style.display = 'block';
+
+                    }
                 }
 
                 form.classList.add( 'was-validated' );
