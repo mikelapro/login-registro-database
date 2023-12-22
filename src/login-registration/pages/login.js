@@ -1,4 +1,5 @@
 // import { checkCredenciales } from '../usecases/check-credenciales.js';
+import * as usecases from '../usecases/index.js';
 
 let credencialesValidas = [
     'mike|7777',
@@ -14,6 +15,24 @@ const login = () => {
     if ( validarDatosRequeridos() == false ) {
         return;
     }
+
+    try {
+        const token = usecases.login( { nombreUsuario: inputUsuario.value, contrasena: inputContrasena.value } );
+        console.log( token );
+    } catch ( error ) {
+        console.log( 'Credenciales incorrectas' );
+    }
+    
+
+    // TODO 1: Llamar al caso de uso login(nu, pass) dentro de un try/catch.
+    //         > Pegarle al api con fetch.
+    // TODO 2: Controlar los errores que podría devolver el api.
+    //         > Mostrar un mensaje al usuario para cada error.
+    // TODO 3: Si se ejecuta sin errores,
+    //         > Guardar el token en el local storage.
+    //         > reenviar al main.
+
+
 
     if ( checkCredenciales() == false ) {
         // Credenciales incorrectas.
@@ -56,6 +75,7 @@ const validarDatosRequeridos = () => {
     return true;
 };
 
+// TODO: Todo esto ya no sirve, lo va a hacer el caso de uso.
 /**
  * Verifica que las credenciales sean correctas.
  * @param {String} usuario 
