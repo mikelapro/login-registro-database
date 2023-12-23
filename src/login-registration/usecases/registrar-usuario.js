@@ -8,8 +8,8 @@ import * as errors from '../errors/index.js';
  */
 export const registrarUsuario = async ( usuario ) => {
 
-    let response = null;
-    let objResponse = null;
+    let response;
+    let objResponse;
     const endpoint = `${config.apiBaseUri}/usuarios`;
     const body = JSON.stringify( usuario );
 
@@ -29,7 +29,7 @@ export const registrarUsuario = async ( usuario ) => {
     } catch ( error ) {
         // *NOTE: La función fetch() no toma como error los 400/500, los toma como una 
         // * respuesta válida. Si es error o no, hay que tratarlo dentro del Try con 
-        // * response.ok=true/false. Solo da error por falla en la conexión.
+        // * response.ok=true/false. Solo da error por falla en la conexión (si está apagada).
         throw new errors.ApiHitFail( endpoint );
     }
 

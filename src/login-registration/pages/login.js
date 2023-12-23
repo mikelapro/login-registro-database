@@ -11,13 +11,14 @@ let divMensajeError = document.querySelector( '#mensaje-error2' );
 let inputUsuario = document.querySelector( '#usuario' );
 let inputContrasena = document.querySelector( '#contrasena' );
 
-const login = () => {
+const login = async () => {
+    // Valida que el usuario haya ingresado los datos requeridos.
     if ( validarDatosRequeridos() == false ) {
         return;
     }
 
     try {
-        const token = usecases.login( { nombreUsuario: inputUsuario.value, contrasena: inputContrasena.value } );
+        const token = await usecases.login( { nombreUsuario: inputUsuario.value, contrasena: inputContrasena.value } );
         console.log( token );
     } catch ( error ) {
         console.log( 'Credenciales incorrectas' );
