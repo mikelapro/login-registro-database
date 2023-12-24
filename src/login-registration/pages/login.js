@@ -12,6 +12,8 @@ let inputUsuario = document.querySelector( '#usuario' );
 let inputContrasena = document.querySelector( '#contrasena' );
 
 const login = async () => {
+    limpiarFormulario();
+
     // Valida que el usuario haya ingresado los datos requeridos.
     if ( validarDatosRequeridos() == false ) {
         return;
@@ -21,9 +23,12 @@ const login = async () => {
         const token = await usecases.login( { nombreUsuario: inputUsuario.value, contrasena: inputContrasena.value } );
         console.log( token );
     } catch ( error ) {
-        console.log( 'Credenciales incorrectas' );
+        divMensajeError.innerHTML = error.message;
+        divMensajeError.style.display = 'block';
     }
     
+    // Está todo ok, lo mandamos al home.
+    window.location.href = 'main.html';
 
     // TODO 1: Llamar al caso de uso login(nu, pass) dentro de un try/catch.
     //         > Pegarle al api con fetch.
@@ -35,20 +40,21 @@ const login = async () => {
 
 
 
-    if ( checkCredenciales() == false ) {
-        // Credenciales incorrectas.
-        divMensajeError.innerHTML = 'El nombre de usuario o la contraseña son incorrectos.';
-        divMensajeError.style.display = 'block';
-    } else {
-        // Credenciales correctas.
-        //mensajeError.innerHTML = "Bienvenido!";
-        divMensajeError.style.display = 'none';
+    // if ( checkCredenciales() == false ) {
+    //     // Credenciales incorrectas.
+    //     divMensajeError.innerHTML = 'El nombre de usuario o la contraseña son incorrectos.';
+    //     divMensajeError.style.display = 'block';
+    // } else {
+    //     // Credenciales correctas.
+    //     //mensajeError.innerHTML = "Bienvenido!";
+    //     divMensajeError.style.display = 'none';
 
-        // Redirige a home.html y le pasa por queryString el parametro nombre.
-        let usuarioValue = inputUsuario.value;
-        window.location.href = 'main.html?nombre=' + usuarioValue;
-        //window.location.href = `main.html?nombre=${usuarioValue}`;
-    }
+    //     // Redirige a home.html y le pasa por queryString el parametro nombre.
+    //     let usuarioValue = inputUsuario.value;
+    //     window.location.href = 'main.html?nombre=' + usuarioValue;
+    //     //window.location.href = `main.html?nombre=${usuarioValue}`;
+    // }
+
 };
 
 /**
@@ -56,10 +62,6 @@ const login = async () => {
  * @returns true, si todos los datos requeridos fueron ingresados. De lo contrario, false.
  */
 const validarDatosRequeridos = () => {
-    // Limpia el mensaje de error anterior.
-    divMensajeError.innerHTML = '';
-    divMensajeError.style.display = 'none';
-
     if ( inputContrasena.value == undefined
         || inputUsuario.value == undefined
         || inputContrasena.value == ''
@@ -74,6 +76,15 @@ const validarDatosRequeridos = () => {
     }
 
     return true;
+};
+
+/**
+ * Limpia el mensaje de error anterior.
+ */
+const  limpiarFormulario = () => {
+
+    divMensajeError.innerHTML = '';
+    divMensajeError.style.display = 'none';
 };
 
 // TODO: Todo esto ya no sirve, lo va a hacer el caso de uso.

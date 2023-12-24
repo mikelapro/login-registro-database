@@ -3,7 +3,7 @@
  */
 export class ApiHitFail extends Error {
     constructor( endpoint ) {
-        super( `Se produjo un error al intentar hacer el fetch al endpoint: ${endpoint}` );
+        super( `Ups!, no pudimos conectarnos con el servidor: ${endpoint}` );
         this.errorCode = 'ApiHitFail';
     }
 }
