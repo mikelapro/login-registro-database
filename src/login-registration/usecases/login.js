@@ -7,6 +7,7 @@ import * as errors from '../errors/index.js';
  * @param {Object} credenciales Credenciales ingresadas por el usuario.
  * @returns Un token jwt.
  * @throws {InvalidCredentials} Cuando las credenciales son incorrectas.
+ * @throws {ApiHitFail} Cuando la api está apagada.
  */
 export const login = async ( credenciales ) => {
     let response;
@@ -36,8 +37,8 @@ export const login = async ( credenciales ) => {
 
     // Si el response NO es ok (ej. error 400, 500, etc.)
     if ( !response.ok ){
-        if( objResponse.errorCode == 'UserNameAlreadyExist' ){
-            throw new errors.UserNameAlreadyExist;
+        if( objResponse.errorCode == 'InvalidCredentials' ){
+            throw  objResponse;
         } else {
             throw new Error( objResponse.message );
         }

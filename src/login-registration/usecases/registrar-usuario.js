@@ -5,6 +5,8 @@ import * as errors from '../errors/index.js';
  * Regristra el usuario especificado mediante el endpoint POST /usuarios.
  * @param {Usuario} usuario El usuario a registrar.
  * @returns El usuario registrado con su nuevo id.
+ * @throws {UserNameAlreadyExist} Cuando el nombre de usuario ya existe en la base de datos.
+ * @throws {ApiHitFail} Cuando la api está apagada.
  */
 export const registrarUsuario = async ( usuario ) => {
 
@@ -36,7 +38,7 @@ export const registrarUsuario = async ( usuario ) => {
     // Si el response NO es ok (ej. error 400, 500, etc.)
     if ( !response.ok ){
         if( objResponse.errorCode == 'UserNameAlreadyExist' ){
-            throw new errors.UserNameAlreadyExist;
+            throw objResponse;
         } else {
             throw new Error( objResponse.message );
         }

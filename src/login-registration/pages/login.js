@@ -1,10 +1,4 @@
-// import { checkCredenciales } from '../usecases/check-credenciales.js';
 import * as usecases from '../usecases/index.js';
-
-let credencialesValidas = [
-    'mike|7777',
-    'esteban|orlando',
-    'samanta|miami'];
 
 // Obtiene los elementos del html que se requieren usar en JS.
 let divMensajeError = document.querySelector( '#mensaje-error2' );
@@ -20,41 +14,31 @@ const login = async () => {
     }
 
     try {
-        const token = await usecases.login( { nombreUsuario: inputUsuario.value, contrasena: inputContrasena.value } );
-        console.log( token );
+        const accessToken = await usecases.login( { nombreUsuario: inputUsuario.value, contrasena: inputContrasena.value } );
+        localStorage.setItem( 'access-token', accessToken );
+
+        // Está todo ok, lo mandamos al home.
+        window.location.href = 'main.html';
+        return;
     } catch ( error ) {
-        divMensajeError.innerHTML = error.message;
+        let mensajeError;
+        switch ( error.errorCode ) {
+            case 'InvalidCredentials': 
+                mensajeError = 'Las credenciales ingresadas son incorrectas. Intente nuevamente.';
+                break;
+
+            case 'ApiHitFail':
+                mensajeError = error.message;
+                break;
+
+            default:
+                mensajeError = error.message;
+                break;
+        }
+
+        divMensajeError.innerHTML = mensajeError;
         divMensajeError.style.display = 'block';
     }
-    
-    // Está todo ok, lo mandamos al home.
-    window.location.href = 'main.html';
-
-    // TODO 1: Llamar al caso de uso login(nu, pass) dentro de un try/catch.
-    //         > Pegarle al api con fetch.
-    // TODO 2: Controlar los errores que podría devolver el api.
-    //         > Mostrar un mensaje al usuario para cada error.
-    // TODO 3: Si se ejecuta sin errores,
-    //         > Guardar el token en el local storage.
-    //         > reenviar al main.
-
-
-
-    // if ( checkCredenciales() == false ) {
-    //     // Credenciales incorrectas.
-    //     divMensajeError.innerHTML = 'El nombre de usuario o la contraseña son incorrectos.';
-    //     divMensajeError.style.display = 'block';
-    // } else {
-    //     // Credenciales correctas.
-    //     //mensajeError.innerHTML = "Bienvenido!";
-    //     divMensajeError.style.display = 'none';
-
-    //     // Redirige a home.html y le pasa por queryString el parametro nombre.
-    //     let usuarioValue = inputUsuario.value;
-    //     window.location.href = 'main.html?nombre=' + usuarioValue;
-    //     //window.location.href = `main.html?nombre=${usuarioValue}`;
-    // }
-
 };
 
 /**
@@ -69,7 +53,7 @@ const validarDatosRequeridos = () => {
         || inputContrasena.value.trim() == ''
         || inputUsuario.value.trim() == '' ) {
         divMensajeError.innerHTML = 'Debe ingresar las credenciales.';
-
+        
         divMensajeError.style.display = 'block';
 
         return false;
@@ -81,34 +65,10 @@ const validarDatosRequeridos = () => {
 /**
  * Limpia el mensaje de error anterior.
  */
-const  limpiarFormulario = () => {
+const limpiarFormulario = () => {
 
     divMensajeError.innerHTML = '';
     divMensajeError.style.display = 'none';
-};
-
-// TODO: Todo esto ya no sirve, lo va a hacer el caso de uso.
-/**
- * Verifica que las credenciales sean correctas.
- * @param {String} usuario 
- * @param {String} contrasena 
- * @returns true, si las credenciales son correctas. De lo contrario false.
- */
-const checkCredenciales = () => {
-    // Credenciales ingresadas por el usuario.
-    const credencialesIngresadas = inputUsuario.value.toLowerCase() + '|' + inputContrasena.value;
-
-    // TODO: Cambiar credencialesValidas por las obtenidas de la base de datos.
-    // TODO: Obteber al usuario correspondiente al nombre de usuario ingresado de la base de datos.
-    // TODO: Si no se encuentra el usuario en la base de datos mostrar un mensaje al usuario.
-    if ( credencialesIngresadas == credencialesValidas[0]
-        || credencialesIngresadas == credencialesValidas[1]
-        || credencialesIngresadas == credencialesValidas[2] ) {
-
-        return true;
-    }
-
-    return false;
 };
 
 // Escucha el evento click del elemento button-ingresar.
