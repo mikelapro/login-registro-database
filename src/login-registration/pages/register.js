@@ -55,6 +55,8 @@ const getUsuario = () => {
     
     let optionGeneroText = optionGenero.options[optionGenero.selectedIndex].text;
     
+    const contrasenaEncriptada = '';
+
     let usuario = new Usuario(
         inputUsuarioValue,
         inputNombreValue,
@@ -95,22 +97,22 @@ const limpiarFormulario = () => {
                     event.stopPropagation();
                     
                     let usuario;
-                    
                     try {
-                        // TODO: Mostrar a Mike problematica de funciones que solo pueden 
-                        // ver usuarios con credenciales y como resolverlo con token!
-                        
                         // Registra un usuario con los datos cargados en el formulario.
                         usuario = await registrarUsuario();
+                        
+                        // Realiza un autologin con los datos del usuario.
+                        const accessToken = await usecases.login( { nombreUsuario: usuario.nombreUsuario, contrasena: usuario.contrasena } );
+                        localStorage.setItem( 'access-token', accessToken );
 
                         event.preventDefault();
                         event.stopPropagation();
-                        window.location.href = 'main.html?nombre=' + usuario.nombre;
+                        //window.location.href = 'main.html?nombre=' + usuario.nombre;
+                        window.location.href = 'main.html';
                         
                     } catch ( error ) {
                         divMensajeError.innerHTML = error.message;
                         divMensajeError.style.display = 'block';
-
                     }
                 }
 
