@@ -1,9 +1,7 @@
 //import './src/login-registration/index.js';
 //import './style.css';
 
-// window.location.replace('./src/login-registration/pages/main.html');
-// window.location.replace('./src/login-registration/pages/main.html');
-window.location.replace( './src/login-registration/pages/login.html' );
+window.location.replace( './src/login-registration/index.html' );
 
 /*
 1. index.html
