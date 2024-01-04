@@ -19,14 +19,14 @@ const mostrarDatosDelUsuario = async () => {
     try {
         const usuario = await usecases.getUsuario();
         h1NombreUsuario.innerHTML = `Bienvenido ${ usuario.nombre }!`;
-
+        h1NombreUsuario.style.display = 'block';
     } catch ( error ) {
         // AccessTokenNotFound
         // JsonWebTokenError
         // ApiHitFail
         // TokenExpiredError
 
-        console.log( error );
+        //console.log( error );
         window.location.href = 'login.html';
     }
 };

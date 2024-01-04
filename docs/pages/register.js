@@ -54,8 +54,6 @@ const getUsuario = () => {
     let optionGenero = document.querySelector( '#option-genero' );
     
     let optionGeneroText = optionGenero.options[optionGenero.selectedIndex].text;
-    
-    const contrasenaEncriptada = '';
 
     let usuario = new Usuario(
         inputUsuarioValue,
@@ -102,7 +100,8 @@ const limpiarFormulario = () => {
                         usuario = await registrarUsuario();
                         
                         // Realiza un autologin con los datos del usuario.
-                        const accessToken = await usecases.login( { nombreUsuario: usuario.nombreUsuario, contrasena: usuario.contrasena } );
+                        let inputcontrasenaValue = document.querySelector( '#input-contrasena' ).value;
+                        const accessToken = await usecases.login( { nombreUsuario: usuario.nombreUsuario, contrasena: inputcontrasenaValue } );
                         localStorage.setItem( 'access-token', accessToken );
 
                         event.preventDefault();
