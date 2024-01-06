@@ -9,3 +9,7 @@ Aplicación web para registro y login de usuarios en una base de datos `MongoDB`
 * Custom errors.
 * Fetch (para conectarnos al API).
 * ESLint.
+
+<img src="./readme-images/form-login.png?raw=true"/><br>
+
+<img src="./readme-images/form-registro.png?raw=true"/>
