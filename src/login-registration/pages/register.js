@@ -79,6 +79,7 @@ const limpiarFormulario = () => {
     // Obtiene todos los formularios a los que queremos aplicar estilos de validación 
     // de Bootstrap personalizados.
     const forms = document.querySelectorAll( '.needs-validation' );
+    const buttonRegistrar = document.querySelector( '#button-registrar' );
 
     // Validoción de datos del formilario (Bootstrap).
     Array.prototype.slice.call( forms )
@@ -90,6 +91,9 @@ const limpiarFormulario = () => {
                 } else {
                     // Limpia el mensaje de error anterior.
                     limpiarFormulario();
+
+                    // Deshabilita el botón (para que no haga varias veces click).
+                    buttonRegistrar.disabled = true;
 
                     event.preventDefault();
                     event.stopPropagation();
@@ -112,6 +116,9 @@ const limpiarFormulario = () => {
                     } catch ( error ) {
                         divMensajeError.innerHTML = error.message;
                         divMensajeError.style.display = 'block';
+
+                        // Habilita el botón (para poder reintentar si da un error).
+                        buttonRegistrar.disabled = false;
                     }
                 }
 

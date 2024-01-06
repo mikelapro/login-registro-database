@@ -4,6 +4,7 @@ import * as usecases from '../usecases/index.js';
 let divMensajeError = document.querySelector( '#mensaje-error2' );
 let inputUsuario = document.querySelector( '#usuario' );
 let inputContrasena = document.querySelector( '#contrasena' );
+const buttonIngresar = document.querySelector( '#button-ingresar' );
 
 const login = async () => {
     limpiarFormulario();
@@ -14,6 +15,9 @@ const login = async () => {
     }
 
     try {
+        // Deshabilita el botón (para que no haga varias veces click).
+        buttonIngresar.disabled = true;
+
         const accessToken = await usecases.login( { nombreUsuario: inputUsuario.value, contrasena: inputContrasena.value } );
         localStorage.setItem( 'access-token', accessToken );
 
@@ -38,6 +42,9 @@ const login = async () => {
 
         divMensajeError.innerHTML = mensajeError;
         divMensajeError.style.display = 'block';
+        
+        // Habilita el botón (para poder reintentar si da un error).
+        buttonIngresar.disabled = false;
     }
 };
 
@@ -72,4 +79,4 @@ const limpiarFormulario = () => {
 };
 
 // Escucha el evento click del elemento button-ingresar.
-document.querySelector( '#button-ingresar' ).addEventListener( 'click', login );
+buttonIngresar.addEventListener( 'click', login );
